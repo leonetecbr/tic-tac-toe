@@ -1,0 +1,19 @@
+{
+  "name":"leone/game-hash",
+  "description":"O clássico jogo da velha, agora em HTML5 e multiplayer.",
+  "autoload":{
+    "psr-4":{
+      "Leone\\Game\\Hash\\":"src/"
+    }
+  },
+  "license": "MIT",
+  "support": {
+    "email": "falecom@leone.tec.br"
+  },
+  "authors": [{
+    "name": "Leone Oliveira",
+    "email": "falecom@leone.tec.br",
+    "homepage": "https://leone.tec.br",
+    "role": "Developer"
+  }]
+}
