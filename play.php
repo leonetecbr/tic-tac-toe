@@ -1,3 +1,16 @@
+<?
+require 'vendor/autoload.php';
+
+if (!empty($_GET['create_room']) && $_GET['create_room']==1) {
+  require __DIR__.'/src/initialize.php';
+  die;
+}elseif (!empty($_GET['room_key'])) {
+  require __DIR__.'/src/validate.php';
+}else {
+  header('Location: /');
+  die;
+}
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -9,6 +22,7 @@
 <body>
   <main>
   	<h1 class="center">Jogo da velha</h1>
+  	<? if ($valid) :?>
   	<div id="game" class="d-none">
     	<div class="center mt">Agora é a vez do <span id="vez"><i class="bi bi-x-lg"></i></span></div>
     	<div id="tabuleiro">
@@ -43,10 +57,18 @@
   <script>
     var be = true;
   </script>
+  <? else:?>
+    <p class="center mt-3">Código inválido!</p>
+    <div class="center mt-3 mb-3">
+      <button class="btn" id="join-room">Entrar em uma partida</button>
+    </div>
+    <div id="join" class="d-none mt-3 mb-3">
+      <div class="row">
+        <input type="text" placeholder="Digite o código ou o link ..." id="code"><button id="btn-join"><i class="bi bi-door-open-fill"></i></button>
+    	</div>
+    </div>
+  <? endif;?>
   <script src="js/jquery.min.js"></script>
   <script src="js/index.js"></script>
-  <script>
-    //startGame();
-  </script>
 </body>
 </html>

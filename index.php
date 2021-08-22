@@ -12,7 +12,7 @@
   	<div class="main">
   	  <p>Você pode criar uma partida ou entrar em uma partida criada pelo(a) seu(ua) amigo(a), quem cria será o X e quem entra será O. O que você quer fazer ?</p>
   	  <div class="center mb-3">
-    	  <a href="https://leone.tec.br/games/hash/play?create_room=1"><button class="btn mb-3" id="create-room">Criar partida</button></a>
+    	  <a href="play?create_room=1"><button class="btn mb-3" id="create-room">Criar partida</button></a>
     	  <button class="btn" id="join-room">Entrar em uma partida</button>
     	</div>
     	<div id="join" class="d-none">

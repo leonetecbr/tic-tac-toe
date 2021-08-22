@@ -1,10 +1,13 @@
 {
-  "name":"leone/game-hash",
+  "name":"leone/tic-tac-toe",
   "description":"O clássico jogo da velha, agora em HTML5 e multiplayer.",
   "autoload":{
     "psr-4":{
-      "Leone\\Game\\Hash\\":"src/"
+      "Leone\\Game\\TicTacToe\\":"src/"
     }
+  },
+  "require": {
+    "vlucas/phpdotenv": "^5.3"
   },
   "license": "MIT",
   "support": {

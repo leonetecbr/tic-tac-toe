@@ -2,7 +2,7 @@ var vez = true, tag;
 var x = '<i class="bi bi-x-lg"></i>';
 var o = '<i class="bi bi-circle"></i>';
 
-function sendServer(){
+function sendServer(id){
   //to do
 }
 
@@ -18,7 +18,7 @@ function mudarVez(){
 function marcarCasa(id) {
   $('#item-'+id).html(tag);
   mudarVez();
-  sendServer();
+  sendServer(id);
 }
 
 function startGame(){
@@ -64,7 +64,7 @@ $('#btn-join').click(function(){
     window.location.href = code;
   }else{
     if (code.length==42) {
-      window.location.href = 'https://leone.tec.br/games/hash/play?room_key='+code;
+      window.location.href = 'play?room_key='+code;
     }else{
       alert('Código inválido!');
     }
