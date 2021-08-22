@@ -1,12 +1,12 @@
 <?php
-use Leone\Game\TicTacToe\Utils\Hash;
-
-session_name('TicTacToe');
-session_start();
-
-$session_id = session_id()??null;
+use Leone\Game\TicTacToe\Utils;
+use Dotenv\Dotenv;
 
 if (!empty($session_id)) {
-  $key = Hash::generateHash();
+  $key = Utils\Hash::generateHash();
+  $dotenv = Dotenv::createImmutable(__DIR__.'/..');
+  $dotenv->load();
+  $db = new Utils\Database('matches');
+  $db->insert(['hash' => $key, 'x' => $session_id]);
   header('Location: ?room_key='.$key);
 }

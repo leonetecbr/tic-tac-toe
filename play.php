@@ -1,6 +1,11 @@
 <?
 require 'vendor/autoload.php';
 
+session_name('TicTacToe');
+session_start();
+
+$session_id = session_id()??null;
+
 if (!empty($_GET['create_room']) && $_GET['create_room']==1) {
   require __DIR__.'/src/initialize.php';
   die;
@@ -42,23 +47,26 @@ if (!empty($_GET['create_room']) && $_GET['create_room']==1) {
       	  <div class="item" id="item-9"></div>
       	</div>
       </div>
-      <div class="center mt-3">Você é o <span id="bexoro"><i class="bi bi-x-lg"></i></span></span></div>
+      <div class="center mt-3">Você é o <span id="bexoro"></span></div>
     </div>
     <div class="center" id="loading">
       <div class="c-loader"></div>
-      <p>Aguardando adversário ...</p>
+      <p id="t-loader">Aguardando adversário ...</p>
+      <p class="text-danger d-none" id="network-error">Estamos enfretando problemas para conectar ao servidor ...</p>
     </div>
     <div class="center mt-3">
       <p class="mb-2">Link para a partida:</p>
-      <input type="text" disabled="true" id="copy_text" value="https://leone.tec.br/games/hash/play?room_key=">
+      <input type="text" disabled="true" id="copy_text" value="https://leone.tec.br/games/tic-tac-toe/play?room_key=<? echo $room_key; ?>">
       <button id="copy" class="mt-2">Copiar</button>
     </div>
   </main>
+  <script src="js/jquery.min.js"></script>
+  <script src="js/index.js"></script>
   <script>
-    var be = true;
+    var be = <?echo $be;?>;
   </script>
   <? else:?>
-    <p class="center mt-3">Código inválido!</p>
+    <p class="center mt-3">Código inválido! Esse código não existe ou já foi usado por alguém!</p>
     <div class="center mt-3 mb-3">
       <button class="btn" id="join-room">Entrar em uma partida</button>
     </div>
@@ -67,8 +75,8 @@ if (!empty($_GET['create_room']) && $_GET['create_room']==1) {
         <input type="text" placeholder="Digite o código ou o link ..." id="code"><button id="btn-join"><i class="bi bi-door-open-fill"></i></button>
     	</div>
     </div>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/index.js"></script>
   <? endif;?>
-  <script src="js/jquery.min.js"></script>
-  <script src="js/index.js"></script>
 </body>
 </html>

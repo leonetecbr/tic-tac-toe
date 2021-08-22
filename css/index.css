@@ -29,6 +29,7 @@ i.bi-circle::before{font-weight:  800 !important;}
 #join-room{background-color: #f33;}
 input[type=text]{border: 1px solid #000;border-radius: 10px;}
 .c-loader{animation: is-rotating 1s infinite;border: 6px solid #e5e5e5;border-radius: 50%;border-top-color: #51d4db;height: 50px;width: 50px;margin: auto;}
+.text-danger{color: #f33;}
 
 #loading{margin: 25vh 0;}
 

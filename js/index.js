@@ -1,9 +1,37 @@
-var vez = true, tag;
+var vez = true, tag, networkError = 0;
 var x = '<i class="bi bi-x-lg"></i>';
 var o = '<i class="bi bi-circle"></i>';
 
 function sendServer(id){
   //to do
+}
+
+function waitOponent(room_key){
+  $.ajax({
+    url: 'waitOponent.php?room_key='+room_key,
+    dataType: 'json',
+    contentType: 'application/json',
+    type: 'POST'
+  }).done(function (data) {
+    if (data.connect) {
+      startGame();
+    }else{
+      setTimeout(function() {waitOponent(room_key)}, 1000);
+    }
+    networkError = 0;
+    $('#network-error').addClass('d-none');
+  }).fail(function() {
+    networkError++;
+    if (networkError < 5) {
+      $('#network-error').removeClass('d-none');
+      setTimeout(function() {waitOponent(room_key)}, 2000);
+    }else{
+      $('.c-loader').hide();
+      $('#t-loader').hide();
+      $('#network-error').show();
+      $('#network-error').html('Parece que você está sem internet!');
+    }
+  });
 }
 
 function mudarVez(){
@@ -30,6 +58,8 @@ function startGame(){
   }else{
     tag = o;
   }
+  
+  $('#bexoro').html(tag);
   
   $('.item').click(function(){
     if (vez===be) {
@@ -60,7 +90,7 @@ $('#btn-join').click(function(){
   var code = $('#code').val();
   if (code == '') {
     alert('Digite um código ou link!');
-  }else if (code.indexOf('https://leone.tec.br/games/hash/play')===0){
+  }else if (code.indexOf('https://leone.tec.br/games/tic-tac-toe/play')===0){
     window.location.href = code;
   }else{
     if (code.length==42) {
