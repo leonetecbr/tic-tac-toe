@@ -17,8 +17,8 @@
     	  <button class="btn" id="join-room">Entrar em uma partida</button>
     	</div>
     	<div id="join" class="d-none">
-    	  <div class="row">
-    	    <input type="text" placeholder="Digite o código ou o link ..." id="code"><button id="btn-join"><i class="bi bi-door-open-fill"></i></button>
+    	  <div class="row row-center">
+    	    <input type="text" placeholder="Digite o código ou o link ..." id="code" class="ms-auto"><button id="btn-join"><i class="bi bi-door-open-fill"></i></button>
     	  </div>
     	</div>
   	</div>

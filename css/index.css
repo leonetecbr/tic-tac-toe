@@ -9,8 +9,9 @@
 .row:last-child .item{border-bottom: none;}
 .item:nth-child(1){border-left: none;}
 .item:nth-child(3){border-right: none;}
-.item{width: 32vw;height: 32vw;max-height: 166.66px;}
+.item{width: 32vw;height: 32vw;max-height: 166.66px;padding:0.5vh;}
 .center{text-align: center;}
+.row-center{align-items: center;justify-content: center;}
 .mt{margin: 5vh 0 2vh 0 !important;}
 .mt-3{margin-top: 30px;}
 .mt-2{margin-top: 20px;}
@@ -19,7 +20,8 @@
 i.bi-circle::before{font-weight:  800 !important;}
 .bi-circle{color: #f00;}
 .bi-x-lg{color: #00f;}
-.item i{font-size: 30vw !important;}
+.item i{font-size: 27.5vw;}
+.item i.bi-circle{font-size: 26vw;}
 .d-none{display: none !important;}
 
 .btn{width: 90% !important;padding: 25px 50px;max-width: 500px;border-radius: 10px;box-shadow: 4px 4px 8px #1C1C1C;background-color: #1a1aff;color: #fff;}
@@ -30,11 +32,14 @@ i.bi-circle::before{font-weight:  800 !important;}
 input[type=text]{border: 1px solid #000;border-radius: 10px;}
 .c-loader{animation: is-rotating 1s infinite;border: 6px solid #e5e5e5;border-radius: 50%;border-top-color: #51d4db;height: 50px;width: 50px;margin: auto;}
 .text-danger{color: #f33;}
-
+.col{display: flex;flex-direction: column;}
+.mb-0{margin-bottom: 0;}
 #loading{margin: 25vh 0;}
 
 @keyframes is-rotating{to{transform: rotate(1turn);}}
 
 @media only screen and (min-width: 500px) {
-  .item i{font-size: 160px !important;}
+  .item i{font-size: 145px;}
+  .item i.bi-circle{font-size: 140px;}
+  .item{padding: 5px;}
 }

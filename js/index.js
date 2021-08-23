@@ -3,20 +3,22 @@ var x = '<i class="bi bi-x-lg"></i>';
 var o = '<i class="bi bi-circle"></i>';
 
 function sendServer(id){
-  //to do
-}
-
-function waitOponent(room_key){
   $.ajax({
-    url: 'waitOponent.php?room_key='+room_key,
+    url: 'moveBoard.php',
     dataType: 'json',
-    contentType: 'application/json',
+    data: {
+      room_key: room_key,
+      position: id,
+      per: be
+    },
     type: 'POST'
   }).done(function (data) {
-    if (data.connect) {
+    if (data.success) {
+      vez = data.dados.vez;
+      drawGame(data.dados);
       startGame();
     }else{
-      setTimeout(function() {waitOponent(room_key)}, 1000);
+      setTimeout(function() {sendServer(id)}, 2000);
     }
     networkError = 0;
     $('#network-error').addClass('d-none');
@@ -24,10 +26,57 @@ function waitOponent(room_key){
     networkError++;
     if (networkError < 5) {
       $('#network-error').removeClass('d-none');
-      setTimeout(function() {waitOponent(room_key)}, 2000);
+      setTimeout(function() {sendServer(id)}, 2000);
     }else{
-      $('.c-loader').hide();
-      $('#t-loader').hide();
+      $('#loading').hide();
+      $('#network-error').show();
+      $('#network-error').html('Parece que você está sem internet!');
+    }
+  });
+}
+
+function drawGame(dados){
+  if (vez) {
+    $('#vez').html(x);
+  }else{
+    $('#vez').html(o);
+  }
+  
+  for (var i=1;i<10; i++) {
+    if (dados[i] != null) {
+      if (dados[i]==1) {
+        $('#item-'+i).html(x);
+      }else{
+        $('#item-'+i).html(o);
+      }
+    }
+  }
+}
+
+function waitOponent(){
+  $.ajax({
+    url: 'waitOponent.php',
+    data: {room_key: room_key},
+    dataType: 'json',
+    type: 'GET'
+  }).done(function (data) {
+    if (data.connect) {
+      vez = data.dados.vez;
+      drawGame(data.dados);
+      startGame();
+    }else{
+      setTimeout(function() {waitOponent()}, 1000);
+    }
+    networkError = 0;
+    $('#network-error').addClass('d-none');
+  }).fail(function() {
+    networkError++;
+    if (networkError < 5) {
+      $('#network-error').removeClass('d-none');
+      setTimeout(function() {waitOponent()}, 2000);
+    }else{
+      $('#loading').hide();
+      $('#game').hide();
       $('#network-error').show();
       $('#network-error').html('Parece que você está sem internet!');
     }
@@ -47,7 +96,17 @@ function marcarCasa(id) {
   $('#item-'+id).html(tag);
   mudarVez();
   sendServer(id);
+  waitOponent();
 }
+
+$('.item').click(function(){
+  if (vez===be) {
+    var id = $(this).attr('id').replace('item-', '');
+    marcarCasa(id);
+  }else{
+    alert('Aguarde sua vez!');
+  }
+});
 
 function startGame(){
   $('#loading').hide();
@@ -61,14 +120,9 @@ function startGame(){
   
   $('#bexoro').html(tag);
   
-  $('.item').click(function(){
-    if (vez===be) {
-      var id = $(this).attr('id').replace('item-', '');
-      marcarCasa(id);
-    }else{
-      alert('Aguarde sua vez!');
-    }
-  });
+  if (vez!==be) {
+    setTimeout(function() {waitOponent();}, 1000);
+  }
 }
 
 $('#copy').click(function(){

@@ -15,9 +15,9 @@ if ($valid) {
   
   if (!empty($game) && !empty($session_id)) {
     if ($game['x'] == $session_id){
-      $be = 'true; waitOponent(\''.$room_key.'\')';
+      $be = 'true';
     }elseif (empty($game['o']) || $game['o'] == $session_id) {
-      $be = 'false; startGame()';
+      $be = 'false';
       $db->update(['o' => $session_id], 'hash = "'.$room_key.'"');
     }else {
       $valid = false;

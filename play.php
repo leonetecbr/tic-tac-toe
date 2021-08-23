@@ -25,7 +25,7 @@ if (!empty($_GET['create_room']) && $_GET['create_room']==1) {
   <title>Jogar | Jogo da velha</title>
 </head>
 <body>
-  <main>
+  <main class="col">
   	<h1 class="center">Jogo da velha</h1>
   	<? if ($valid) :?>
   	<div id="game" class="d-none">
@@ -52,18 +52,21 @@ if (!empty($_GET['create_room']) && $_GET['create_room']==1) {
     <div class="center" id="loading">
       <div class="c-loader"></div>
       <p id="t-loader">Aguardando adversário ...</p>
-      <p class="text-danger d-none" id="network-error">Estamos enfretando problemas para conectar ao servidor ...</p>
     </div>
-    <div class="center mt-3">
+    <div class="center">
+      <p class="text-danger mb-0 d-none" id="network-error">Estamos enfretando problemas para conectar ao servidor ...</p>
+    </div>
+    <div class="center mt-2" id="link-game">
       <p class="mb-2">Link para a partida:</p>
-      <input type="text" disabled="true" id="copy_text" value="https://leone.tec.br/games/tic-tac-toe/play?room_key=<? echo $room_key; ?>">
+      <input type="text" disabled="true" id="copy_text" value="https://leone.tec.br/games/tic-tac-toe/play?room_key=<? echo $room_key; ?>"><br/>
       <button id="copy" class="mt-2">Copiar</button>
     </div>
   </main>
   <script src="js/jquery.min.js"></script>
   <script src="js/index.js"></script>
   <script>
-    var be = <?echo $be;?>;
+    var be = <?echo $be;?>, room_key = '<?echo $room_key;?>';
+    waitOponent();
   </script>
   <? else:?>
     <p class="center mt-3">Código inválido! Esse código não existe ou já foi usado por alguém!</p>
@@ -71,8 +74,8 @@ if (!empty($_GET['create_room']) && $_GET['create_room']==1) {
       <button class="btn" id="join-room">Entrar em uma partida</button>
     </div>
     <div id="join" class="d-none mt-3 mb-3">
-      <div class="row">
-        <input type="text" placeholder="Digite o código ou o link ..." id="code"><button id="btn-join"><i class="bi bi-door-open-fill"></i></button>
+      <div class="row row-center">
+        <input type="text" placeholder="Digite o código ou o link ..." id="code"><br/><button id="btn-join"><i class="bi bi-door-open-fill"></i></button>
     	</div>
     </div>
     <script src="js/jquery.min.js"></script>

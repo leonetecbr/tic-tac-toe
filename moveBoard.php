@@ -12,12 +12,14 @@ use Dotenv\Dotenv;
 $dotenv = Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
-$room_key = filter_input(INPUT_GET, 'room_key', FILTER_SANITIZE_STRING);
+$room_key = filter_input(INPUT_POST, 'room_key', FILTER_SANITIZE_STRING);
+
+$casa = intval($_POST['position']);
+$be = ($_POST['per']==='true');
 
 $valid = Utils\Hash::validateHash($room_key);
 
 $result['success'] = false;
-$result['connect'] = false;
 
 try {
   if (!$valid) {
@@ -31,21 +33,25 @@ try {
     throw new Exception('Código inválido!');
   }
   
-  if ($game['x'] != $session_id && $game['o'] != $session_id) {
-    throw new Exception('Código inválido!');
-  }
-  
-  $result['dados']['vez'] = true;
-  for ($i=1;$i<10; $i++) {
-    $result['dados'][$i] = $game[$i];
-    if($game[$i]!==null){      $result['dados']['vez'] = !$result['dados']['vez'];
+  if ($be) {
+    if ($game['x'] != $session_id) {
+      throw new Exception('Código inválido!');
+    }
+  }else{
+    if ($game['o'] != $session_id) {
+      throw new Exception('Código inválido!');
     }
   }
   
-  if (!empty($game['o'])) {
-    $result['connect'] = true;
+  if ($casa > 9 || $casa < 1) {
+    throw new Exception('Casa inválida!');
   }
   
+  if ($game[$casa]!==null) {
+    throw new Exception('Casa já ocupada!');
+  }
+  
+  $db->update(['matches.'.$casa => intval($be)], 'hash = "'.$room_key.'"');
   $result['success'] = true;
   $result['code'] = 200;
 } catch (Exception $e) {

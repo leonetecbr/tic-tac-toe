@@ -3,7 +3,6 @@ namespace Leone\Game\TicTacToe\Utils;
 
 use PDO;
 use PDOException;
-use Exception;
 
 /**
  * Classe responsável por fazer a conexão com o banco de dados
