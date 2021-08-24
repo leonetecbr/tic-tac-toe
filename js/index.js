@@ -1,6 +1,65 @@
-var vez = true, tag, networkError = 0;
+var vez = true, tag, networkError = 0, ended = false, win = null;
 var x = '<i class="bi bi-x-lg"></i>';
 var o = '<i class="bi bi-circle"></i>';
+
+function checkEnd() {
+  var casas = $('.item'), marked = 0, markedPer = [];
+  
+  for (var i = 0;i<casas.length;i++) {
+    if (casas[i].innerHTML != '') {
+      marked++;
+      if (casas[i].innerHTML == x) {
+        markedPer[i+1] = true;
+      }else{
+        markedPer[i+1] = false;
+      }
+    }
+  }
+  
+  if (marked==9) {
+    ended = true;
+  } else if ((markedPer[1]===true && markedPer[2]===true && markedPer[3]===true) || (markedPer[4]===true && markedPer[5]===true && markedPer[6]===true) || (markedPer[7]===true && markedPer[8]===true && markedPer[9]===true)) {
+    ended = true;
+    win = true;
+  } else if ((markedPer[1]===false && markedPer[2]===false && markedPer[3]===false) || (markedPer[4]===false && markedPer[5]===false && markedPer[6]===false) || (markedPer[7]===false && markedPer[8]===false && markedPer[9]===false)){
+    ended = true;
+    win = false;
+  } else if ((markedPer[1]===true && markedPer[4]===true && markedPer[7]===true) || (markedPer[2]===true && markedPer[5]===true && markedPer[8]===true) || (markedPer[3]===true && markedPer[6]===true && markedPer[9]===true)){
+    ended = true;
+    win = true;
+  } else if ((markedPer[1]===false && markedPer[4]===false && markedPer[7]===false) || (markedPer[2]===false && markedPer[5]===false && markedPer[8]===false) || (markedPer[3]===false && markedPer[6]===false && markedPer[9]===false)){
+    ended = true;
+    win = false;
+  } else if ((markedPer[1]===true && markedPer[5]===true && markedPer[9]===true) || (markedPer[3]===true && markedPer[5]===true && markedPer[7]===true)){
+    ended = true;
+    win = true;
+  } else if ((markedPer[1]===false && markedPer[5]===false && markedPer[9]===false) || (markedPer[3]===false && markedPer[5]===false && markedPer[7]===false)){
+    ended = true;
+    win = false;
+  }
+  
+  if (ended) {
+    $('#xo-vez').hide();
+    $('#result').removeClass('d-none');
+    $('#link-game').html('<a href="play?create_room=1"><button class="btn mb-3" id="create-room">Criar outra partida</button></a><button class="btn" id="join-room">Entrar em uma partida</button>');
+    $('#join-room').click(function() {
+      $('#create-room').hide();
+      $('#join').removeClass('d-none');
+      $('#join-room').css({'background-color':'#ff4c4c'});
+      window.location.href = '#join';
+    });
+    if (win === null) {
+      $('#result').html('Empate!');
+      $('#result').css({'color':'#ff8c00'});
+    }else if(win == be){
+      $('#result').html('Vitória!');
+      $('#result').css({'color':'#080'});
+    }else{
+      $('#result').html('Derrota!');
+      $('#result').css({'color':'#f33'});
+    }
+  }
+}
 
 function sendServer(id){
   $.ajax({
@@ -18,6 +77,7 @@ function sendServer(id){
       drawGame(data.dados);
       startGame();
     }else{
+      alert(data.message);
       setTimeout(function() {sendServer(id)}, 2000);
     }
     networkError = 0;
@@ -93,18 +153,30 @@ function mudarVez(){
 }
 
 function marcarCasa(id) {
-  $('#item-'+id).html(tag);
-  mudarVez();
-  sendServer(id);
-  waitOponent();
+  if ($('#item-'+id).html()=='') {
+    $('#item-'+id).html(tag);
+    mudarVez();
+    sendServer(id);
+    
+    checkEnd();
+    if (!ended){
+      waitOponent();
+    }
+  }else{
+    alert('Casa já marcada!');
+  }
 }
 
 $('.item').click(function(){
-  if (vez===be) {
-    var id = $(this).attr('id').replace('item-', '');
-    marcarCasa(id);
+  if (!ended) {
+    if (vez===be) {
+      var id = $(this).attr('id').replace('item-', '');
+      marcarCasa(id);
+    }else{
+      alert('Aguarde sua vez!');
+    }
   }else{
-    alert('Aguarde sua vez!');
+    alert('Essa partida já acabou!');
   }
 });
 
@@ -120,8 +192,12 @@ function startGame(){
   
   $('#bexoro').html(tag);
   
-  if (vez!==be) {
-    setTimeout(function() {waitOponent();}, 1000);
+  checkEnd();
+  
+  if (!ended){
+    if (vez!==be) {
+      setTimeout(function() {waitOponent();}, 1000);
+    }
   }
 }
 

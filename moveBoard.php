@@ -48,7 +48,7 @@ try {
   }
   
   if ($game[$casa]!==null) {
-    throw new Exception('Casa já ocupada!');
+    throw new Exception('Casa já marcada!');
   }
   
   $db->update(['matches.'.$casa => intval($be)], 'hash = "'.$room_key.'"');

@@ -29,7 +29,8 @@ if (!empty($_GET['create_room']) && $_GET['create_room']==1) {
   	<h1 class="center">Jogo da velha</h1>
   	<? if ($valid) :?>
   	<div id="game" class="d-none">
-    	<div class="center mt">Agora é a vez do <span id="vez"><i class="bi bi-x-lg"></i></span></div>
+    	<div class="center mt" id="xo-vez">Agora é a vez do <span id="vez"><i class="bi bi-x-lg"></i></span></div>
+    	<div class="center mt-2 mb-2 d-none" id="result"></div>
     	<div id="tabuleiro">
       	<div class="row">
       	  <div class="item" id="item-1"></div>
@@ -61,6 +62,11 @@ if (!empty($_GET['create_room']) && $_GET['create_room']==1) {
       <input type="text" disabled="true" id="copy_text" value="https://leone.tec.br/games/tic-tac-toe/play?room_key=<? echo $room_key; ?>"><br/>
       <button id="copy" class="mt-2">Copiar</button>
     </div>
+    <div id="join" class="d-none mt-3 mb-3">
+      <div class="row row-center">
+        <input type="text" placeholder="Digite o código ou o link ..." id="code"><br/><button id="btn-join"><i class="bi bi-door-open-fill"></i></button>
+    	</div>
+    </div>
   </main>
   <script src="js/jquery.min.js"></script>
   <script src="js/index.js"></script>
@@ -69,8 +75,9 @@ if (!empty($_GET['create_room']) && $_GET['create_room']==1) {
     waitOponent();
   </script>
   <? else:?>
-    <p class="center mt-3">Código inválido! Esse código não existe ou já foi usado por alguém!</p>
+    <p class="center mt-3">Código inválido! Esse código não existe, já foi usado por alguém ou essa partida já acabou!</p>
     <div class="center mt-3 mb-3">
+      <a href="play?create_room=1"><button class="btn mb-3" id="create-room">Criar partida</button></a>
       <button class="btn" id="join-room">Entrar em uma partida</button>
     </div>
     <div id="join" class="d-none mt-3 mb-3">
