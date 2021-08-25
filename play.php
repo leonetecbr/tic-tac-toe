@@ -1,6 +1,5 @@
 <?
 require 'vendor/autoload.php';
-
 use Dotenv\Dotenv;
 
 $dotenv = Dotenv::createImmutable(__DIR__);
@@ -11,11 +10,14 @@ session_start();
 
 $session_id = session_id()??null;
 
+$person = ($_GET['person']??''=='nobot')?true:false;
+
 if (!empty($_GET['create_room']) && $_GET['create_room']==1) {
   require __DIR__.'/src/initialize.php';
   if (!$isRobot) {
     die;
   }
+  $person = true;
 }elseif (!empty($_GET['room_key'])) {
   require __DIR__.'/src/validate.php';
   $isRobot = false;
@@ -40,7 +42,20 @@ if (!empty($_GET['create_room']) && $_GET['create_room']==1) {
 <body>
   <main class="col">
   	<h1 class="center">Jogo da velha</h1>
-  	<? if ($isRobot):?>
+  	<?if (!$person): ?>
+  	<div class="center">
+  	  <button class="btn" id="join-room">Entrar nessa partida</button>
+  	</div>
+  	<script>
+  	  document.getElementById('join-room').addEventListener('click', function(){
+  	      if(document.cookie.indexOf('TicTacToe')!=-1){
+  	        window.location.href = window.location.href+'&person=nobot';
+  	      }else{
+  	        alert('Ative os cookies primeiro');
+  	      }
+  	  });
+  	</script>
+  	<?elseif ($isRobot):?>
   	<form id="form" action="?">
   	  <p class="center">Não conseguimos confirmar que você não é um robô, por favor marque a caixa de verificação abaixo:</p>
   	  <div class="g-recaptcha" data-sitekey="<?echo $_ENV['PUBLIC_RECAPTCHA_V2'];?>" data-callback="submit"></div>
