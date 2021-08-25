@@ -36,6 +36,10 @@ input[type=text]{border: 1px solid #000;border-radius: 10px;}
 .mb-0{margin-bottom: 0;}
 #loading{margin: 25vh 0 20vh 0;}
 #result{text-transform: uppercase;font-weight: bolder;}
+.g-recaptcha{width: 304px;margin: auto;}
+.grecaptcha-badge{visibility: hidden;}
+.small, .small a{font-size: 0.8rem !important;font-weight: 300;}
+a{text-decoration: none;}
 
 @keyframes is-rotating{to{transform: rotate(1turn);}}
 

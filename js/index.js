@@ -2,6 +2,27 @@ var vez = true, tag, networkError = 0, ended = false, win = null;
 var x = '<i class="bi bi-x-lg"></i>';
 var o = '<i class="bi bi-circle"></i>';
 
+$('#create-room').click(function(e) {
+  e.preventDefault();
+  isNotRobot();
+});
+
+function isNotRobot(to = 'play?create_room=1') {
+  grecaptcha.ready(function() {
+    grecaptcha.execute('6LePcSEcAAAAAPGLHLV91ZMtH0Bkxkr47aiF4toJ', {action: 'start_tictactoe'})
+      .then(function(token) {
+        window.location.href = to+'&g-recaptcha-response='+token;
+      });
+  });
+}
+
+function joinRoom() {
+  $('#create-room').hide();
+  $('#join').removeClass('d-none');
+  $('#join-room').css({'background-color':'#ff4c4c'});
+  window.location.href = '#join';
+}
+
 function checkEnd() {
   var casas = $('.item'), marked = 0, markedPer = [];
   
@@ -16,9 +37,7 @@ function checkEnd() {
     }
   }
   
-  if (marked==9) {
-    ended = true;
-  } else if ((markedPer[1]===true && markedPer[2]===true && markedPer[3]===true) || (markedPer[4]===true && markedPer[5]===true && markedPer[6]===true) || (markedPer[7]===true && markedPer[8]===true && markedPer[9]===true)) {
+  if ((markedPer[1]===true && markedPer[2]===true && markedPer[3]===true) || (markedPer[4]===true && markedPer[5]===true && markedPer[6]===true) || (markedPer[7]===true && markedPer[8]===true && markedPer[9]===true)) {
     ended = true;
     win = true;
   } else if ((markedPer[1]===false && markedPer[2]===false && markedPer[3]===false) || (markedPer[4]===false && markedPer[5]===false && markedPer[6]===false) || (markedPer[7]===false && markedPer[8]===false && markedPer[9]===false)){
@@ -36,17 +55,20 @@ function checkEnd() {
   } else if ((markedPer[1]===false && markedPer[5]===false && markedPer[9]===false) || (markedPer[3]===false && markedPer[5]===false && markedPer[7]===false)){
     ended = true;
     win = false;
+  } else if (marked==9) {
+    ended = true;
   }
   
   if (ended) {
     $('#xo-vez').hide();
     $('#result').removeClass('d-none');
-    $('#link-game').html('<a href="play?create_room=1"><button class="btn mb-3" id="create-room">Criar outra partida</button></a><button class="btn" id="join-room">Entrar em uma partida</button>');
+    $('#link-game').html('<a href="play?create_room=1"><button class="btn" id="create-room">Criar outra partida</button></a><p class="small mb-3">Este botão é protegido pelo Google reCAPTCHA para garantir que você não é um robô. <a target="_blank" rel="nofollow" href="https://policies.google.com/privacy">Políticas de Privacidade</a> e <a target="_blank" rel="nofollow" href="https://policies.google.com/terms">Termos de Serviço</a> do Google são aplicáveis.<p><button class="btn" id="join-room">Entrar em uma partida</button>');
     $('#join-room').click(function() {
-      $('#create-room').hide();
-      $('#join').removeClass('d-none');
-      $('#join-room').css({'background-color':'#ff4c4c'});
-      window.location.href = '#join';
+      joinRoom();
+    });
+    $('#create-room').click(function(e) {
+      e.preventDefault();
+      isNotRobot($(this).attr('href'));
     });
     if (win === null) {
       $('#result').html('Empate!');
@@ -62,37 +84,36 @@ function checkEnd() {
 }
 
 function sendServer(id){
-  $.ajax({
-    url: 'moveBoard.php',
-    dataType: 'json',
-    data: {
-      room_key: room_key,
-      position: id,
-      per: be
-    },
-    type: 'POST'
-  }).done(function (data) {
-    if (data.success) {
-      vez = data.dados.vez;
-      drawGame(data.dados);
-      startGame();
-    }else{
-      alert(data.message);
-      setTimeout(function() {sendServer(id)}, 2000);
-    }
-    networkError = 0;
-    $('#network-error').addClass('d-none');
-  }).fail(function() {
-    networkError++;
-    if (networkError < 5) {
-      $('#network-error').removeClass('d-none');
-      setTimeout(function() {sendServer(id)}, 2000);
-    }else{
-      $('#loading').hide();
-      $('#network-error').show();
-      $('#network-error').html('Parece que você está sem internet!');
-    }
-  });
+  if (!ended) {
+    $.ajax({
+      url: 'moveBoard',
+      dataType: 'json',
+      data: {
+        room_key: room_key,
+        position: id,
+        per: be
+      },
+      type: 'POST'
+    }).done(function (data) {
+      if (data.success) {
+        startGame();
+      }else if (!ended){
+        alert(data.message);
+      }
+      networkError = 0;
+      $('#network-error').addClass('d-none');
+    }).fail(function() {
+      networkError++;
+      if (networkError < 5) {
+        $('#network-error').removeClass('d-none');
+        setTimeout(function() {sendServer(id)}, 2000);
+      }else{
+        $('#loading').hide();
+        $('#network-error').show();
+        $('#network-error').html('Parece que você está sem internet!');
+      }
+    });
+  }
 }
 
 function drawGame(dados){
@@ -114,33 +135,39 @@ function drawGame(dados){
 }
 
 function waitOponent(){
-  $.ajax({
-    url: 'waitOponent.php',
-    data: {room_key: room_key},
-    dataType: 'json',
-    type: 'GET'
-  }).done(function (data) {
-    if (data.connect) {
-      vez = data.dados.vez;
-      drawGame(data.dados);
-      startGame();
-    }else{
-      setTimeout(function() {waitOponent()}, 1000);
-    }
-    networkError = 0;
-    $('#network-error').addClass('d-none');
-  }).fail(function() {
-    networkError++;
-    if (networkError < 5) {
-      $('#network-error').removeClass('d-none');
-      setTimeout(function() {waitOponent()}, 2000);
-    }else{
-      $('#loading').hide();
-      $('#game').hide();
-      $('#network-error').show();
-      $('#network-error').html('Parece que você está sem internet!');
-    }
-  });
+  if (!ended) {
+    $.ajax({
+      url: 'waitOponent',
+      data: {room_key: room_key},
+      dataType: 'json',
+      type: 'GET'
+    }).done(function (data) {
+      if (data.success) {
+        if (data.connect) {
+          vez = data.dados.vez;
+          drawGame(data.dados);
+          startGame();
+        }else{
+          setTimeout(function() {waitOponent()}, 2000);
+        }
+      }else if(!ended){
+        alert(data.message);
+      }
+      networkError = 0;
+      $('#network-error').addClass('d-none');
+    }).fail(function() {
+      networkError++;
+      if (networkError < 5) {
+        $('#network-error').removeClass('d-none');
+        setTimeout(function() {waitOponent()}, 2000);
+      }else{
+        $('#loading').hide();
+        $('#game').hide();
+        $('#network-error').show();
+        $('#network-error').html('Parece que você está sem internet!');
+      }
+    });
+  }
 }
 
 function mudarVez(){
@@ -196,7 +223,7 @@ function startGame(){
   
   if (!ended){
     if (vez!==be) {
-      setTimeout(function() {waitOponent();}, 1000);
+      setTimeout(function() {waitOponent();}, 2000);
     }
   }
 }
@@ -210,10 +237,7 @@ $('#copy').click(function(){
 });
 
 $('#join-room').click(function() {
-  $('#create-room').hide();
-  $('#join').removeClass('d-none');
-  $('#join-room').css({'background-color':'#ff4c4c'});
-  window.location.href = '#join';
+  joinRoom();
 });
 
 $('#btn-join').click(function(){
@@ -222,11 +246,9 @@ $('#btn-join').click(function(){
     alert('Digite um código ou link!');
   }else if (code.indexOf('https://leone.tec.br/games/tic-tac-toe/play')===0){
     window.location.href = code;
+  }else if (code.length==42) {
+    window.location.href = 'play?room_key='+code;
   }else{
-    if (code.length==42) {
-      window.location.href = 'play?room_key='+code;
-    }else{
-      alert('Código inválido!');
-    }
+    alert('Código inválido!');
   }
 });

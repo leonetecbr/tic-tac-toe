@@ -1,9 +1,5 @@
 <?php
 use Leone\Game\TicTacToe\Utils;
-use Dotenv\Dotenv;
-
-$dotenv = Dotenv::createImmutable(__DIR__.'/..');
-$dotenv->load();
 
 $room_key = filter_input(INPUT_GET, 'room_key', FILTER_SANITIZE_STRING);
 

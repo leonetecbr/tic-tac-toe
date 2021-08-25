@@ -1,5 +1,6 @@
 <?php
 require 'vendor/autoload.php';
+require 'src/checkEnd.php';
 
 session_name('TicTacToe');
 session_start();
@@ -33,6 +34,12 @@ try {
   
   if ($game['x'] != $session_id && $game['o'] != $session_id) {
     throw new Exception('Código inválido!');
+  }
+  
+  $ended = checkEnd($game);
+  
+  if ($ended) {
+    $db->delete(['col' => 'hash', 'val' => $room_key]);
   }
   
   $result['dados']['vez'] = true;

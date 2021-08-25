@@ -1,5 +1,6 @@
 <?php
 require 'vendor/autoload.php';
+require 'src/checkEnd.php';
 
 session_name('TicTacToe');
 session_start();
@@ -41,6 +42,13 @@ try {
     if ($game['o'] != $session_id) {
       throw new Exception('Código inválido!');
     }
+  }
+  
+  $ended = checkEnd($game);
+  
+  if ($ended) {
+    $db->delete(['col' => 'hash', 'val' => $room_key]);
+    throw new Exception('A partida terminou ou expirou!');
   }
   
   if ($casa > 9 || $casa < 1) {
