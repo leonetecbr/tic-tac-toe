@@ -22,7 +22,7 @@ if (!$isRobot) {
       if (empty($game)) {
         $key = $hash;
       }else {
-        header('Location: play?room_key='.$hash);
+        header('Location: play?person=nobot&room_key='.$hash);
         die;
       }
     }else{
