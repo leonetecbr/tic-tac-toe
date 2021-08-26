@@ -43,7 +43,7 @@ if (!empty($_GET['create_room']) && $_GET['create_room']==1) {
   <main class="col">
   	<h1 class="center">Jogo da velha</h1>
   	<?if (!$person): ?>
-  	<div class="center">
+  	<div class="center mt-3">
   	  <button class="btn" id="join-room">Entrar nessa partida</button>
   	</div>
   	<script>
@@ -59,7 +59,8 @@ if (!empty($_GET['create_room']) && $_GET['create_room']==1) {
   	<form id="form" action="?">
   	  <p class="center">Não conseguimos confirmar que você não é um robô, por favor marque a caixa de verificação abaixo:</p>
   	  <div class="g-recaptcha" data-sitekey="<?echo $_ENV['PUBLIC_RECAPTCHA_V2'];?>" data-callback="submit"></div>
-  	  <input type="hidden" name="create_room" value="1">
+  	  <input type="hidden" name="create_room" value="<? echo $_GET['create_room']??'';?>">
+  	  <input type="hidden" name="hash" value="<? echo $_GET['hash']??'';?>">
   	  <input type="hidden" name="type" value="v2">
   	</form>
   	<script>
@@ -92,7 +93,7 @@ if (!empty($_GET['create_room']) && $_GET['create_room']==1) {
     </div>
     <div class="center" id="loading">
       <div class="c-loader"></div>
-      <p id="t-loader">Aguardando adversário ...</p>
+      <p id="t-loader"><? echo ($be=='true')?'Aguardando adversário ...':'Conectando ...';?></p>
     </div>
     <div class="center">
       <p class="text-danger mb-0 d-none" id="network-error">Estamos enfretando problemas para conectar ao servidor ...</p>
@@ -102,16 +103,11 @@ if (!empty($_GET['create_room']) && $_GET['create_room']==1) {
       <input type="text" disabled="true" id="copy_text" value="https://leone.tec.br/games/tic-tac-toe/play?room_key=<? echo $room_key; ?>"><br/>
       <button id="copy" class="mt-2">Copiar</button>
     </div>
-    <div id="join" class="d-none mt-3 mb-3">
-      <div class="row row-center">
-        <input type="text" placeholder="Digite o código ou o link ..." id="code"><br/><button id="btn-join"><i class="bi bi-door-open-fill"></i></button>
-    	</div>
-    </div>
   </main>
   <script src="js/jquery.min.js"></script>
   <script src="js/index.js"></script>
   <script>
-    var be = <?echo $be;?>, room_key = '<?echo $room_key;?>';
+    var be = <?echo $be;?>, room_key = '<?echo $room_key;?>', next = '<?echo $game['next'];?>';
     waitOponent();
   </script>
   <? else:?>

@@ -62,13 +62,10 @@ function checkEnd() {
   if (ended) {
     $('#xo-vez').hide();
     $('#result').removeClass('d-none');
-    $('#link-game').html('<a href="play?create_room=1"><button class="btn" id="create-room">Criar outra partida</button></a><p class="small mb-3">Este botão é protegido pelo Google reCAPTCHA para garantir que você não é um robô. <a target="_blank" rel="nofollow" href="https://policies.google.com/privacy">Políticas de Privacidade</a> e <a target="_blank" rel="nofollow" href="https://policies.google.com/terms">Termos de Serviço</a> do Google são aplicáveis.<p><button class="btn" id="join-room">Entrar em uma partida</button>');
-    $('#join-room').click(function() {
-      joinRoom();
-    });
+    $('#link-game').html('<a href="play?create_room=1&hash="><button class="btn" id="create-room">Jogar de novo</button></a><p class="small mb-3">Este botão é protegido pelo Google reCAPTCHA para garantir que você não é um robô. <a target="_blank" rel="nofollow" href="https://policies.google.com/privacy">Políticas de Privacidade</a> e <a target="_blank" rel="nofollow" href="https://policies.google.com/terms">Termos de Serviço</a> do Google são aplicáveis.<p>');
     $('#create-room').click(function(e) {
       e.preventDefault();
-      isNotRobot($(this).attr('href'));
+      isNotRobot($(this).parent('a').attr('href')+next);
     });
     if (win === null) {
       $('#result').html('Empate!');
@@ -233,7 +230,7 @@ $('#copy').click(function(){
   $('#copy_text').select();
   document.execCommand('copy');
   $('#copy_text').attr('disabled', true);
-  alert('Texto copiado!');
+  alert('Link copiado!');
 });
 
 $('#join-room').click(function() {

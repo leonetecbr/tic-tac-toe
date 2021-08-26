@@ -29,6 +29,7 @@ SET time_zone = "+03:00";
 
 CREATE TABLE `matches` (
   `hash` varchar(42) NOT NULL,
+  `next` varchar(42) NOT NULL,
   `x` varchar(64) NOT NULL,
   `o` varchar(64) DEFAULT NULL,
   `1` tinyint(1) DEFAULT NULL,
@@ -52,7 +53,7 @@ CREATE TABLE `matches` (
 --
 ALTER TABLE `matches`
   ADD PRIMARY KEY (`hash`);
-
+  ADD UNIQUE KEY `next` (`next`);
 DELIMITER $$
 --
 -- Eventos
