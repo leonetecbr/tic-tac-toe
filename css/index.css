@@ -2,7 +2,7 @@
 
 *{max-width: 100%;box-sizing: border-box;font-family: sans-serif;font-size: 1.2rem;border: none;}
 
-body{padding: 20px;}
+body{padding: 3vw;}
 #tabuleiro{margin: auto;padding: 10px;max-width: 500px;}
 .row{display: flex;}
 .item{border: 1px solid black;}
@@ -10,7 +10,7 @@ body{padding: 20px;}
 .row:last-child .item{border-bottom: none;}
 .item:nth-child(1){border-left: none;}
 .item:nth-child(3){border-right: none;}
-.item{width: 32vw;height: 32vw;max-height: 166.66px;padding:0.5vh;}
+.item{width: 32vw;height: 32vw;max-height: 166.66px;padding:1vh;}
 .center{text-align: center;}
 .row-center{align-items: center;justify-content: center;}
 .mt{margin: 2vh 0 !important;}
@@ -21,8 +21,8 @@ body{padding: 20px;}
 i.bi-circle::before{font-weight:  800 !important;}
 .bi-circle{color: #f00;}
 .bi-x-lg{color: #00f;}
-.item i{font-size: 27.5vw;}
-.item i.bi-circle{font-size: 26vw;}
+.item i{font-size: 23.5vw;}
+.item i.bi-circle{font-size: 23.5vw;}
 .d-none{display: none !important;}
 
 .btn{width: 100%;padding: 25px 35px;border-radius: 10px;box-shadow: 4px 4px 8px #1C1C1C;background-color: #1a1aff;color: #fff;}
@@ -43,7 +43,8 @@ input[type=text]{border: 1px solid #000;border-radius: 10px;}
 a{text-decoration: none;}
 .buttons > #create-room{margin-bottom: 20px;}
 .buttons{display: flex;flex-wrap: wrap;}
-button > a{color: #fff}
+.link{cursor: pointer;}
+#link-game > #create-room{max-width: 550px;}
 
 @keyframes is-rotating{to{transform: rotate(1turn);}}
 

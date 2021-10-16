@@ -20,8 +20,8 @@ $dotenv->load();?>
   	  <p>Você pode criar uma partida ou entrar em uma partida criada pelo(a) seu(ua) amigo(a), quem cria será o X e quem entra será O. O que você quer fazer ?</p>
   	  <div class="center mb-3">
 		<div class="buttons">
-    	  <button class="btn" id="create-room"><a href="play?create_room=1">Criar partida</a></button>
-    	  <button class="btn" id="join-room">Entrar em uma partida</button>
+    	  <button class="btn link" id="create-room" onclick="redirect('play?create_room=1)">Criar partida</button>
+    	  <button class="btn link" id="join-room">Entrar em uma partida</button>
 		</div>
 		<p class="small mb-3">Este botão é protegido pelo Google reCAPTCHA para garantir que você não é um robô. <a target="_blank" rel="nofollow" href="https://policies.google.com/privacy">Políticas de Privacidade</a> e <a target="_blank" rel="nofollow" href="https://policies.google.com/terms">Termos de Serviço</a> do Google são aplicáveis.<p>
     	</div>

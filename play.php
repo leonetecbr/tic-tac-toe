@@ -100,7 +100,7 @@ if (!empty($_GET['create_room']) && $_GET['create_room']==1) {
     </div>
     <div class="center mt-2" id="link-game">
       <p class="mb-2">Link para a partida:</p>
-      <input type="text" disabled="true" id="copy_text" value="https://leone.tec.br/games/tic-tac-toe/play?room_key=<? echo $room_key; ?>"><br/>
+      <input type="text" disabled="true" id="copy_text" value="https://leone.tec.br/games/tic-tac-toe/play?room_key=<?php echo $room_key; ?>"><br/>
       <button id="copy" class="mt-2">Copiar</button>
     </div>
   </main>
@@ -113,9 +113,11 @@ if (!empty($_GET['create_room']) && $_GET['create_room']==1) {
   <?php else:?>
     <p class="center mt-3">Código inválido! Esse código não existe, já foi usado por alguém, essa partida já acabou ou expirou!</p>
     <div class="center mt-3 mb-3">
-      <a href="play?create_room=1"><button class="btn" id="create-room">Criar partida</button></a>
-      <p class="small mb-3">Este botão é protegido pelo Google reCAPTCHA para garantir que você não é um robô. <a target="_blank" rel="nofollow" href="https://policies.google.com/privacy">Políticas de Privacidade</a> e <a target="_blank" rel="nofollow" href="https://policies.google.com/terms">Termos de Serviço</a> do Google são aplicáveis.<p>
+      <div class="buttons">
+      <button class="btn link" id="create-room" onclick="isNotRobot()">Criar partida</button>
       <button class="btn" id="join-room">Entrar em uma partida</button>
+      </div>
+      <p class="small mb-3">Este botão é protegido pelo Google reCAPTCHA para garantir que você não é um robô. <a target="_blank" rel="nofollow" href="https://policies.google.com/privacy">Políticas de Privacidade</a> e <a target="_blank" rel="nofollow" href="https://policies.google.com/terms">Termos de Serviço</a> do Google são aplicáveis.<p>
     </div>
     <div id="join" class="d-none mt-3 mb-3">
       <div class="row row-center">

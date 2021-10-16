@@ -62,11 +62,7 @@ function checkEnd() {
   if (ended) {
     $('#xo-vez').hide();
     $('#result').removeClass('d-none');
-    $('#link-game').html('<a href="play?create_room=1&hash="><button class="btn" id="create-room">Jogar de novo</button></a><p class="small mb-3">Este botão é protegido pelo Google reCAPTCHA para garantir que você não é um robô. <a target="_blank" rel="nofollow" href="https://policies.google.com/privacy">Políticas de Privacidade</a> e <a target="_blank" rel="nofollow" href="https://policies.google.com/terms">Termos de Serviço</a> do Google são aplicáveis.<p>');
-    $('#create-room').click(function(e) {
-      e.preventDefault();
-      isNotRobot($(this).parent('a').attr('href')+next);
-    });
+    $('#link-game').html('<button class="btn link" id="create-room" onclick="isNotRobot(\'play?create_room=1&hash=\'+next)">Jogar de novo</button><p class="small mb-3">Este botão é protegido pelo Google reCAPTCHA para garantir que você não é um robô. <a target="_blank" rel="nofollow" href="https://policies.google.com/privacy">Políticas de Privacidade</a> e <a target="_blank" rel="nofollow" href="https://policies.google.com/terms">Termos de Serviço</a> do Google são aplicáveis.<p>');
     if (win === null) {
       $('#result').html('Empate!');
       $('#result').css({'color':'#ff8c00'});
@@ -203,6 +199,10 @@ $('.item').click(function(){
     alert('Essa partida já acabou!');
   }
 });
+
+function redirect($to){
+  window.location.href = $to;
+}
 
 function startGame(){
   $('#loading').hide();
