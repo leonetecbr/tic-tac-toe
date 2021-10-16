@@ -1,15 +1,6 @@
--- phpMyAdmin SQL Dump
--- version 5.1.0
--- https://www.phpmyadmin.net/
---
--- Host: localhost
--- Tempo de geração: 25-Ago-2021 às 13:22
--- Versão do servidor: 10.5.8-MariaDB
--- versão do PHP: 8.0.6
-
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
-SET time_zone = "+03:00";
+SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -18,13 +9,7 @@ SET time_zone = "+03:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Banco de dados: `tictactoe`
---
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `matches`
+-- Estrutura da tabela  `matches`
 --
 
 CREATE TABLE `matches` (
@@ -45,22 +30,11 @@ CREATE TABLE `matches` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Índices para tabelas despejadas
---
-
---
--- Índices para tabela `matches`
+-- Indíces da tabela `matches`
 --
 ALTER TABLE `matches`
-  ADD PRIMARY KEY (`hash`);
+  ADD PRIMARY KEY (`hash`),
   ADD UNIQUE KEY `next` (`next`);
-DELIMITER $$
---
--- Eventos
---
-CREATE DEFINER=``@`localhost` EVENT `expiress` ON SCHEDULE EVERY 30 MINUTE STARTS '2021-08-25 10:22:07' ON COMPLETION NOT PRESERVE ENABLE DO DELETE FROM matches WHERE (CURRENT_TIMESTAMP-matches.created)>600$$
-
-DELIMITER ;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

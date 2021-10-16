@@ -1,4 +1,4 @@
-<?
+<?php
 require 'vendor/autoload.php';
 use Dotenv\Dotenv;
 
@@ -35,14 +35,14 @@ if (!empty($_GET['create_room']) && $_GET['create_room']==1) {
   <?php if ($isRobot): ?>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   <?php else: ?>
-    <script src="https://www.google.com/recaptcha/api.js?render=<?echo $_ENV['PUBLIC_RECAPTCHA_V3'];?>" async></script>
+    <script src="https://www.google.com/recaptcha/api.js?render=<?php echo $_ENV['PUBLIC_RECAPTCHA_V3'];?>" async></script>
   <?php endif; ?>
   <title>Jogar | Jogo da velha</title>
 </head>
 <body>
   <main class="col">
   	<h1 class="center">Jogo da velha</h1>
-  	<?if (!$person): ?>
+  	<?php if (!$person): ?>
   	<div class="center mt-3">
   	  <button class="btn" id="join-room">Entrar nessa partida</button>
   	</div>
@@ -55,12 +55,12 @@ if (!empty($_GET['create_room']) && $_GET['create_room']==1) {
   	      }
   	  });
   	</script>
-  	<?elseif ($isRobot):?>
+  	<?php elseif ($isRobot):?>
   	<form id="form" action="?">
   	  <p class="center">Não conseguimos confirmar que você não é um robô, por favor marque a caixa de verificação abaixo:</p>
-  	  <div class="g-recaptcha" data-sitekey="<?echo $_ENV['PUBLIC_RECAPTCHA_V2'];?>" data-callback="submit"></div>
-  	  <input type="hidden" name="create_room" value="<? echo $_GET['create_room']??'';?>">
-  	  <input type="hidden" name="hash" value="<? echo $_GET['hash']??'';?>">
+  	  <div class="g-recaptcha" data-sitekey="<?php echo $_ENV['PUBLIC_RECAPTCHA_V2'];?>" data-callback="submit"></div>
+  	  <input type="hidden" name="create_room" value="<?php echo $_GET['create_room']??'';?>">
+  	  <input type="hidden" name="hash" value="<?php echo $_GET['hash']??'';?>">
   	  <input type="hidden" name="type" value="v2">
   	</form>
   	<script>
@@ -68,7 +68,7 @@ if (!empty($_GET['create_room']) && $_GET['create_room']==1) {
   	    document.getElementById('form').submit();
       }
   	</script>
-  	<? elseif ($valid) :?>
+  	<?php elseif ($valid) :?>
   	<div id="game" class="d-none">
     	<div class="center mt" id="xo-vez">Agora é a vez do <span id="vez"><i class="bi bi-x-lg"></i></span></div>
     	<div class="center mt-2 mb-2 d-none" id="result"></div>
@@ -93,7 +93,7 @@ if (!empty($_GET['create_room']) && $_GET['create_room']==1) {
     </div>
     <div class="center" id="loading">
       <div class="c-loader"></div>
-      <p id="t-loader"><? echo ($be=='true')?'Aguardando adversário ...':'Conectando ...';?></p>
+      <p id="t-loader"><?php echo ($be=='true')?'Aguardando adversário ...':'Conectando ...';?></p>
     </div>
     <div class="center">
       <p class="text-danger mb-0 d-none" id="network-error">Estamos enfretando problemas para conectar ao servidor ...</p>
@@ -107,10 +107,10 @@ if (!empty($_GET['create_room']) && $_GET['create_room']==1) {
   <script src="js/jquery.min.js"></script>
   <script src="js/index.js"></script>
   <script>
-    var be = <?echo $be;?>, room_key = '<?echo $room_key;?>', next = '<?echo $game['next'];?>';
+    var be = <?php echo $be;?>, room_key = '<?php echo $room_key;?>', next = '<?php echo $game['next'];?>';
     waitOponent();
   </script>
-  <? else:?>
+  <?php else:?>
     <p class="center mt-3">Código inválido! Esse código não existe, já foi usado por alguém, essa partida já acabou ou expirou!</p>
     <div class="center mt-3 mb-3">
       <a href="play?create_room=1"><button class="btn" id="create-room">Criar partida</button></a>
@@ -124,6 +124,6 @@ if (!empty($_GET['create_room']) && $_GET['create_room']==1) {
     </div>
     <script src="js/jquery.min.js"></script>
     <script src="js/index.js"></script>
-  <? endif;?>
+  <?php endif;?>
 </body>
 </html>

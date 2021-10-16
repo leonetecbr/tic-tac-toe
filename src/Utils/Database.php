@@ -27,9 +27,8 @@ class Database{
       $this->connection = new PDO('mysql:host='.$_ENV['HOST_DB'].';dbname='.$_ENV['BANK_DB'],$_ENV['USER_DB'],$_ENV['PASS_DB']);
       $this->connection->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
     }catch(PDOException $e){
-      $content = "\n\n".$e->getMessage();
-      file_put_contents('logs/error_db.txt', $content, FILE_APPEND);
-      die('500');
+      http_response_code(500);
+      die;
     }
   }
   
@@ -43,8 +42,7 @@ class Database{
       $statement->execute($params);
       return $statement;
     }catch(PDOException $e){
-      $content = "\n\n".$e->getMessage();
-      file_put_contents('logs/error_db.txt', $content, FILE_APPEND);
+      http_response_code(500);
       die;
     }
   }
