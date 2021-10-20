@@ -11,6 +11,7 @@ $dotenv->load();?>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="/games/tic-tac-toe/css/index.css">
   <script src="https://www.google.com/recaptcha/api.js?render=<?php echo $_ENV['PUBLIC_RECAPTCHA_V3'];?>"></script>
+  <link rel="icon" href="/games/tic-tac-toe/favicon.ico">
   <title>Início | Jogo da velha</title>
 </head>
 <body>
