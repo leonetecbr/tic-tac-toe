@@ -1,0 +1,20 @@
+    <div class="center mb-3">
+		<div class="buttons d-sm-flex text-center justify-content-around mb-3">
+          <form action="play" method="post" id="create-form">
+              <input type="hidden" name="create_room" value="1">
+              <input type="hidden" name="g-recaptcha-response" value="" id="token">
+    	    <button class="btn link btn-primary btn-lg mb-3 mb-sm-0" id="create-room" type="submit">Criar partida</button>
+          </form>
+    	  <button class="btn link btn-danger btn-lg" id="join-room">Entrar em uma partida</button>
+		</div>
+		<div class="small text-center text-muted mb-3">Este botão é protegido pelo Google reCAPTCHA para garantir que você não é um robô. <a target="_blank" rel="nofollow" href="https://policies.google.com/privacy" class="text-decoration-none small">Políticas de Privacidade</a> e <a target="_blank" rel="nofollow" href="https://policies.google.com/terms" class="text-decoration-none small">Termos de Serviço</a> do Google são aplicáveis.<p>
+    	</div>
+    	<div id="join" class="d-none">
+    	  <div class="d-flex flex-row justify-content-around">
+              <div class="col-10 col-lg-11"><input type="text" class="form-control" placeholder="Digite o código ou o link ..." id="code"></div><div><button id="btn-join" class="btn btn-danger"><i class="bi bi-door-open-fill"></i></button></div>
+    	  </div>
+          <div class="text-danger small text-center d-none" id="icode">
+            Código da partida ou link inválido!
+          </div>
+    	</div>
+  	</div>

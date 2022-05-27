@@ -3,11 +3,13 @@
   "description":"O clássico jogo da velha, agora em HTML5 e multiplayer.",
   "autoload":{
     "psr-4":{
-      "Leone\\Game\\TicTacToe\\":"src/"
+      "TicTacToe\\":"src/"
     }
   },
   "require": {
-    "vlucas/phpdotenv": "^5.3"
+    "vlucas/phpdotenv": "^5.3",
+    "ext-pdo": "*",
+    "ext-json": "*"
   },
   "license": "MIT",
   "support": {
