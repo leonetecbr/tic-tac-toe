@@ -6,15 +6,24 @@ use PDO;
 use PDOException;
 
 /**
- * Classe responsável por fazer a conexão com o banco de dados
+ * Cria e gerencia a conexão com o banco de dados
  */
 class Database
 {
+    /**
+     * Nome da tabela
+     * @var mixed|null
+     */
     private $table;
+
+    /**
+     * Conexão com o bando de dados
+     * @var PDO
+     */
     private $connection;
 
     /**
-     * Define a tabela e a instância da conexão
+     * Define o nome da tabela e cria a conexão da conexão
      */
     public function __construct($table = null)
     {
@@ -23,9 +32,10 @@ class Database
     }
 
     /**
-     * Método responsável por criar uma conexão com o banco de dados
+     * Cria uma conexão com o banco de dados
+     * @return void
      */
-    private function setConnection()
+    private function setConnection(): void
     {
         try {
             $this->connection = new PDO('mysql:host=' . $_ENV['HOST_DB'] . ';dbname=' . $_ENV['BANK_DB'], $_ENV['USER_DB'], $_ENV['PASS_DB']);
@@ -37,8 +47,10 @@ class Database
     }
 
     /**
-     * Método responsável por executar queries dentro do banco de dados
-     * @return PDOStatement
+     * Executa queries dentro do banco de dados
+     * @param string $query
+     * @param array $params
+     * @return mixed
      */
     public function execute(string $query, array $params = [])
     {
@@ -53,10 +65,11 @@ class Database
     }
 
     /**
-     * Método responsável por inserir dados no banco
-     * @return integer ID inserido
+     * Insere registros no banco de dados
+     * @param array $values
+     * @return PDO
      */
-    public function insert(array $values)
+    public function insert(array $values): PDO
     {
         $fields = array_keys($values);
         $binds  = array_pad([], count($fields), '?');
@@ -66,8 +79,12 @@ class Database
     }
 
     /**
-     * Método responsável por executar uma consulta no banco
-     * @return PDOStatement
+     * Faz consultas no banco de dados
+     * @param array $where
+     * @param int|null $limit
+     * @param string $fields
+     * @param string|null $order
+     * @return mixed
      */
     public function select(array $where = [], int $limit = null, string $fields = '*', string $order = null)
     {
@@ -85,34 +102,37 @@ class Database
     }
 
     /**
-     * Método responsável por executar atualizações no banco de dados
-     * @return boolean
+     * Atualiza registros no banco de dados
+     * @param array $values
+     * @param string $where
+     * @return bool
      */
-    public function update(array $values, string $where)
+    public function update(array $values, string $where): bool
     {
         $fields = array_keys($values);
         $query = 'UPDATE ' . $this->table . ' SET ' . implode('=?,', $fields) . '=? WHERE ' . $where;
-        $this->execute($query, array_values($values));
-        return true;
+        return $this->execute($query, array_values($values));
     }
 
     /**
-     * Método responsável por excluir dados do banco
+     * Deleta registros no banco de dados
+     * @param array $where
+     * @return bool
      */
-    public function delete(array $where)
+    public function delete(array $where): bool
     {
-        $text = 'WHERE ' . $where['col'] . ' = ?';
+        $text = "WHERE {$where['col']} = ?";
         $params[0] = $where['val'];
-        $query = 'DELETE FROM ' . $this->table . ' ' . $text;
-        $this->execute($query, $params);
-        return true;
+        $query = "DELETE FROM $this->table $text";
+        return $this->execute($query, $params);
     }
 
     /**
-     * Método responsável por alterar a tabela padrão para querys no dados do banco
+     * Altera a tabela padrão para queries no dados do banco
      * @param string $table
+     * @return void
      */
-    public function setTable($table)
+    public function setTable($table): void
     {
         if ($table !== $this->table) {
             $this->table = $table;

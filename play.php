@@ -34,8 +34,9 @@ if (!empty($_POST['create_room']) && $_POST['create_room'] == 1) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/games/tic-tac-toe/css/index.min.css">
     <link rel="stylesheet" href="/games/tic-tac-toe/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/games/tic-tac-toe/css/index.css">
+    <link rel="stylesheet" href="/games/tic-tac-toe/css/bootstrap-icons.css">
     <?php if ($isRobot) : ?>
         <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <?php else : ?>
@@ -144,7 +145,7 @@ if (!empty($_POST['create_room']) && $_POST['create_room'] == 1) {
     </main>
     <script src="/games/tic-tac-toe/js/jquery.min.js"></script>
     <script src="/games/tic-tac-toe/js/bootstrap.bundle.min.js"></script>
-    <script src="/games/tic-tac-toe/js/index.js"></script>
+    <script src="/games/tic-tac-toe/js/index.min.js"></script>
     <script>
         const be = <?php echo $be; ?>,
             room_key = '<?php echo $room_key; ?>',
@@ -156,7 +157,7 @@ if (!empty($_POST['create_room']) && $_POST['create_room'] == 1) {
     <?php require('src/Components/buttons.html'); ?>
     <script src="/games/tic-tac-toe/js/jquery.min.js"></script>
     <script src="/games/tic-tac-toe/js/bootstrap.bundle.min.js"></script>
-    <script src="/games/tic-tac-toe/js/index.js"></script>
+    <script src="/games/tic-tac-toe/js/index.min.js"></script>
 <?php endif; ?>
 </body>
 

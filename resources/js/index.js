@@ -10,7 +10,7 @@ createRoom.on('click', function(e) {
 });
 
 function isNotRobot(to = null) {
-    grecaptcha.ready(function() {
+    grecaptcha.ready(function (command) {
         grecaptcha.execute('6LePcSEcAAAAAPGLHLV91ZMtH0Bkxkr47aiF4toJ', {action: 'start_tictactoe'})
             .then(function(token) {
                 if (to === null) {

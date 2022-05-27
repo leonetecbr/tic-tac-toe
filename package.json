@@ -1,0 +1,34 @@
+{
+  "name": "tic-tac-toe",
+  "version": "1.0.0",
+  "description": "Este jogo foi desenvolvido para aprimorar minhas habilidades em Java Script e PHP, bem como para poder jogar com meus amigos sem precisar instalar aplicativos.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leonetecbr/tic-tac-toe.git"
+  },
+  "author": {
+    "name": "Leone Oliveira",
+    "email": "falecom@leone.tec.br",
+    "url": "https://leone.tec.br/"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/leonetecbr/tic-tac-toe/issues"
+  },
+  "homepage": "https://leone.tec.br/games/tic-tac-toe",
+  "dependencies": {
+    "bootstrap": "^5.1.3",
+    "bootstrap-icons": "^1.8.3",
+    "jquery": "^3.6.0",
+    "laravel-mix": "^6.0.43"
+  },
+  "scripts": {
+    "dev": "npm run development",
+    "development": "mix",
+    "watch": "mix watch",
+    "watch-poll": "mix watch -- --watch-options-poll=1000",
+    "hot": "mix watch --hot",
+    "prod": "npm run production",
+    "production": "mix --production"
+  }
+}

@@ -23,6 +23,7 @@ try {
     $result['success'] = false;
     $result['connect'] = false;
 
+    // Se a hash não bater com os padrões
     if (!$valid) {
         throw new RequestException('Código inválido!');
     }
@@ -30,20 +31,31 @@ try {
     $db = new Utils\Database('matches');
     $game = $db->select(['col' => 'hash', 'val' => $room_key])->fetch();
 
-    if (empty($game) || empty($session_id)) {
+    // Se o jogo não existe mais no banco de dados
+    if (empty($game)) {
         throw new RequestException('Jogo finalizado!');
     }
 
+    // Se o usuário não tem um identificar nos cookies
+    if (empty($session_id)){
+        throw new RequestException('Ative os cookies!');
+    }
+
+    // Verifica se a identificação presente os cookies é a mesma do banco de dados
     if ($game['x'] != $session_id && $game['o'] != $session_id) {
         throw new RequestException('Você não é um participante!');
     }
 
     $ended = checkEnd($game);
 
+    // Verifica se a partida em questão já foi encerrada
     if ($ended) {
+        // Se já encerrou é deletada do banco de dados
         $db->delete(['col' => 'hash', 'val' => $room_key]);
+        throw new RequestException('A partida terminou ou expirou!');
     }
 
+    // Determina de quem é vez
     $result['dados']['vez'] = true;
     for ($i = 1; $i < 10; $i++) {
         $result['dados'][$i] = $game[$i];
@@ -52,6 +64,7 @@ try {
         }
     }
 
+    // Verifica se o outro jogador já está conectado
     if (!empty($game['o'])) {
         $result['connect'] = true;
     }
@@ -62,6 +75,9 @@ try {
     $code = $e->getCode();
     $result['code'] = ($code === 0) ? 400 : $code;
     $result['message'] = $e->getMessage();
+} catch (Exception $e){
+    $result['code'] = 500;
+    $result['message'] = 'Erro interno!';
 } finally {
     echo json_encode($result);
 }

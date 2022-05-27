@@ -8,11 +8,12 @@ namespace TicTacToe\Utils;
 class Hash
 {
 
-	/**
-	 * Gera a chave para a partida tamanho do acréscimo padrão é 10, totalizando 42 caracteres
-	 * #return string
-	 */
-	public static function generateHash(int $len = 10)
+    /**
+     * Gera a chave para a partida tamanho do acréscimo padrão é 10, totalizando 42 caracteres
+     * @param int $len
+     * @return string
+     */
+	public static function generateHash(int $len = 10): string
 	{
 		$hash = md5(time());
 		$chars = 'ABCDEFabcdef0123456789';
@@ -22,11 +23,13 @@ class Hash
 		return $hash;
 	}
 
-	/**
-	 * Faz a validação da chave da sala que são strinsgs de 42 caracteres alfanuméricos
-	 * @ return boolean
-	 */
-	public static function validateHash(string $hash, int $len = 42)
+    /**
+     * Faz a validação da chave da sala que por padrão é uma string de 42 caracteres alfanuméricos
+     * @param string $hash
+     * @param int $len
+     * @return bool
+     */
+	public static function validateHash(string $hash, int $len = 42): bool
 	{
 		return (ctype_xdigit($hash) && strlen($hash) == $len);
 	}

@@ -8,6 +8,7 @@ use TicTacToe\Utils\RequestException;
 use Dotenv\Dotenv;
 
 try {
+    // Se o método não for POST
     if ($_SERVER['REQUEST_METHOD'] !== 'POST'){
         throw new Utils\RequestException('Método não permitido!', 405);
     }
@@ -33,10 +34,12 @@ try {
 
     $result['success'] = false;
 
+    // Se a hash não bater com os padrões
 	if (!$valid) {
 		throw new RequestException('Código inválido!');
 	}
 
+    // Se o código da casa for fora da escala permitida
     if ($casa > 9 || $casa < 1) {
         throw new RequestException('Casa inválida!');
     }
@@ -44,25 +47,36 @@ try {
 	$db = new Utils\Database('matches');
 	$game = $db->select(['col' => 'hash', 'val' => $room_key])->fetch();
 
-	if (empty($game) || empty($session_id)) {
-		throw new RequestException('Código inválido!');
-	}
+    // Se o jogo não existe mais no banco de dados
+    if (empty($game)) {
+        throw new RequestException('Jogo finalizado!');
+    }
 
+    // Se o usuário não tem um identificar nos cookies
+    if (empty($session_id)){
+        throw new RequestException('Ative os cookies!');
+    }
+
+    // Verifica se a identificação presente os cookies é a mesma do banco de dados
 	if (($be && $game['x'] != $session_id) || (!$be && $game['o'] != $session_id)) {
         throw new RequestException('Sem permissão!', 401);
     }
 
 	$ended = checkEnd($game);
 
+    // Verifica se a partida em questão já foi encerrada
 	if ($ended) {
+        // Se já encerrou é deletada do banco de dados
 		$db->delete(['col' => 'hash', 'val' => $room_key]);
 		throw new RequestException('A partida terminou ou expirou!');
 	}
 
+    // Verifica se a casa não já foi marcada
 	if ($game[$casa] !== null) {
 		throw new RequestException('Casa já marcada!');
 	}
 
+    // Conta quantas casas foram marcadas
     $marked = 0;
     for ($i = 1; $i <= 9; $i++){
         if ($game[$i] !== null){
@@ -70,12 +84,15 @@ try {
         }
     }
 
+    // Determina de quem é a vez
     $vez = ($marked % 2 === 0);
 
+    // Movimento fora da vez do usuário
     if ($vez !== $be){
         throw new RequestException('Aguarde sua vez!', 403);
     }
 
+    // Marca a casa
 	$db->update(['matches.' . $casa => intval($be)], 'hash = "' . $room_key . '"');
 	$result['success'] = true;
 	$result['code'] = 200;
